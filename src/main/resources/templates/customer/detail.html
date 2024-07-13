@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>demoApp | 会員情報詳細</title>
+</head>
+<body>
+<h1>Buyer Concierge | 会員情報詳細</h1>
+
+<div class="customer-info" th:object="${customer}">
+  <div class="customer-id">
+    <p th:text="*{id}"></p>
+  </div>
+
+  <div class="customer-email">
+    <p th:text="*{email}"></p>
+  </div>
+
+  <div class="customer-password">
+    <p th:text="*{password}"></p>
+  </div>
+
+  <div class="customer-name">
+    <p th:text="*{name}"></p>
+  </div>
+
+  <div class="customer-role">
+    <p th:text="*{role}"></p>
+  </div>
+
+</div>
+
+</body>
+</html>

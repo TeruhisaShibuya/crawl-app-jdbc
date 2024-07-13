@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>demoApp | 会員詳細</title>
+</head>
+<body>
+<h1>Buyer Concierge | 会員詳細</h1>
+
+<div class="customer-info" th:object="${customer}">
+  <div class="customer-id">
+    <p th:text="*{id}"></p>
+  </div>
+
+  <div class="customer-name">
+    <p th:text="*{name}"></p>
+  </div>
+
+  <div class="customer-remarks">
+    <p th:text="*{role}"></p>
+  </div>
+
+  <!--/* 会員情報編集ボタン */-->
+  <div>
+    <button>
+      <a class="btn-edit" th:href="@{/customer/{id}/edit(id=*{id})}">編集する</a>
+    </button>
+
+  </div>
+
+</div>
+
+
+</body>
+</html>
