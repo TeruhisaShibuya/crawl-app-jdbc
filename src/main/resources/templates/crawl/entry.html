@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head th:replace="~{layout :: meta_header('在庫検索', ~{::links}, ~{::scripts})}">
+
+  <!--/* ページ個別css */-->
+  <th:block th:fragment="links">
+    <!-- Select2.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">
+  </th:block>
+
+  <!--/* ページ個別js */-->
+  <th:block th:fragment="scripts">
+    <!-- Select2.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Select2本体 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+    <!-- Select2日本語化 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/i18n/ja.js"></script>
+    <!--/* entry.html 個別jsファイル */-->
+    <script th:src="@{/js/search.js}"></script>
+  </th:block>
+
+</head>
+<body>
+
+<header th:replace="~{layout :: common_header}"></header>
+
+<div class="container mt-5">
+
+  <form th:action="@{/crawl/__${CUSTOMER_ID}__/search}" method="post" enctype="multipart/form-data" th:object="${payload}">
+    <div class="row">
+
+      <!--/* 1行目 */-->
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label for="brand-name">ブランド名<span class="text-danger">*</span></label>
+          <!--                    <select id="brand-name" class="form-control apply-select2" name="brand-name">-->
+          <select id="brand-name" class="form-control" th:errorclass="border-danger" name="brandName">
+            <!--/* 値を選択しない場合はformのフィールドはnullとなる */-->
+            <option value="">選択してください</option>
+            <!--/* enumそのものの値は `.name()` メソッドで出力可能. */-->
+            <option th:each="brandName : ${brandNames}"
+                    th:value="${brandName.name()}"
+                    th:text="${brandName.getDisplayName()}">
+            </option>
+          </select>
+          <div class="error-display-area" style="height: 32px;">
+            <div class="text-danger" th:if="${#fields.hasErrors('brandName')}" th:errors="*{brandName}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label for="search-range">価格検索範囲</label>
+          <!--                    <select id="search-range" class="form-control apply-select2" name="search-range">-->
+          <select id="search-range" class="form-control" th:errorclass="border-danger" name="searchRange">
+            <option value="">選択してください</option>
+            <option th:each="searchRange : ${searchRanges}"
+                    th:value="${searchRange.name()}"
+                    th:text="${searchRange.getDisplayName()}">
+            </option>
+          </select>
+          <div class="error-display-area" style="height: 32px;">
+            <div class="text-danger" th:if="${#fields.hasErrors('searchRange')}" th:errors="*{getSearchRange}"></div>
+          </div>
+        </div>
+      </div>
+
+      <!--/* 2行目 */-->
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label for="sex">性別<span class="text-danger">*</span></label>
+          <!--                    <select id="item-category" class="form-control apply-select2" name="item-category">-->
+          <select id="sex" class="form-control" th:errorclass="border-danger" name="sex">
+            <option value="">選択してください</option>
+            <option th:each="sex : ${sexList}"
+                    th:value="${sex.name()}"
+                    th:text="${sex.getDisplayName()}">
+            </option>
+          </select>
+          <div class="error-display-area" style="height: 32px;">
+            <div class="text-danger" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label for="item-category">カテゴリ名<span class="text-danger">*</span></label>
+          <!--                    <select id="item-category" class="form-control apply-select2" name="item-category">-->
+          <select id="item-category" class="form-control" th:errorclass="border-danger" name="itemCategory">
+            <option value="">選択してください</option>
+            <option th:each="itemCategory : ${itemCategories}"
+                    th:value="${itemCategory.name()}"
+                    th:text="${itemCategory.getDisplayName()}">
+            </option>
+          </select>
+          <div class="error-display-area" style="height: 32px;">
+            <div class="text-danger" th:if="${#fields.hasErrors('itemCategory')}" th:errors="*{itemCategory}"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--/* 3行目 */-->
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label for="item-price">商品価格<span class="text-danger">*</span></label>
+          <input type="text" id="item-price" class="form-control" th:errorclass="border-danger" name="itemPrice" value="">
+          <div class="error-display-area" style="height: 32px;">
+            <div class="text-danger" th:if="${#fields.hasErrors('itemPrice')}" th:errors="*{itemPrice}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label for="currency">価格単位<span class="text-danger">*</span></label>
+          <!--                    <select id="currency" class="form-control apply-select2" name="currency">-->
+          <select id="currency" class="form-control" th:errorclass="border-danger" name="currency">
+            <option value="">選択してください</option>
+            <option th:each="currency : ${currencies}"
+                    th:value="${currency.name()}"
+                    th:text="${currency.getDisplayName()}">
+            </option>
+          </select>
+          <div class="error-display-area" style="height: 32px;">
+            <div class="text-danger" th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}"></div>
+          </div>
+        </div>
+      </div>
+
+      <!--/* 4行目 */-->
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label for="exchange-rate">為替レート</label>
+          <input type="text" id="exchange-rate" class="form-control" th:errorclass="border-danger" name="exchangeRate" value="">
+          <div class="error-display-area" style="height: 32px;">
+            <div class="text-danger" th:if="${#fields.hasErrors('exchangeRate')}" th:errors="*{exchangeRate}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 mb-3">
+        <div class="form-group">
+          <label for="item-image">商品画像</label>
+          <input type="file" accept=".jpg, .jpeg, .png" id="item-image" class="form-control" name="itemImage" value="">
+        </div>
+        <div class="error-display-area" style="height: 32px;">
+          <div class="text-danger" th:if="${#fields.hasErrors('itemImage')}" th:errors="*{itemImage}"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-3 text-center">
+      <button class="search-exe" type="submit">検索する</button>
+    </div>
+
+  </form>
+</div>
+
+<header th:replace="~{layout :: common_footer}"></header>
+
+</body>
+</html>

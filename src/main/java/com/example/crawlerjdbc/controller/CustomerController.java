@@ -43,6 +43,9 @@ public class CustomerController {
      *
      * http://localhost:8080/customer/1/detail
      *
+     * 例外処理の確認
+     * http://localhost:8080/customer/10/detail
+     *
      * @param customerId 会員ID(サロゲートキー)
      * @param model モデル
      * @return 会員詳細画面
@@ -52,18 +55,25 @@ public class CustomerController {
                              Model model) {
 
         // 対象の会員情報を取得する
-        Customer customer;
-        try {
-            customer = customerService.findById(customerId);
-        } catch (DataAccessException ex) {
-            System.out.println("Customer findById Error: " + ex.getMessage());
-            // エラー画面を表示する
-            return null;
-        }
+        Customer customer = customerService.findById(customerId);
 
         // 対象の会員情報をフロントへ返却
         model.addAttribute("customer", customer);
 
         return "customer/detail";
     }
+
+    /**
+     *
+     * http://localhost:8080/customer/test
+     *
+     * @param customerId
+     * @return
+     */
+    @GetMapping("/test")
+    public String test(){
+        return "customer/test";
+    }
+
 }
+

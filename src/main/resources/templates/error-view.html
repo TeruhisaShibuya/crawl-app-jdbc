@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!--/* ファイル名に複数の英単語を使用する場合はSEOの観点からハイフンでつなぐのが良い */-->
+  <!--/* アンダースコアや大文字はURLで表示した時にSEOフレンドリーでないため */-->
+  <title>エラー画面</title>
+</head>
+<body>
+<h1>エラーが発生しました</h1>
+<p>何度も表示される場合はお、お手数ですがお問い合わせください。</p>
+<div class="http-status">
+  <p>ステータス</p><span th:text="${httpStatus}"></span>
+</div>
+<div class="error-code">
+  <p>エラーコード</p><span th:text="${errorCode}"></span>
+</div>
+<div class="previous-link">
+  <a th:href="${previousLink}">前の画面に戻る</a>
+</div>
+
+</body>
+</html>

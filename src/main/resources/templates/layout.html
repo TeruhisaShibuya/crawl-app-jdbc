@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<!--/* fragment="名前(タグ,タグ,タグ名)" 括弧内部は引数のイメージ */-->
+<head th:fragment="meta_header(title, links, scripts)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${title}+' | Buyer Concierge'">各ページタイトル | Buyer Concierge</title>
+  <!--/* css読み込み ブートストラップ 絶対パス */-->
+  <link rel="stylesheet" th:href="@{/css/common/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/common/common.css}">
+  <link rel="stylesheet" th:href="@{/css/layout/layout.css}">
+  <!--/* ブートストラップ用js 絶対パス  */-->
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+
+  <!-- 各View固有で読み込むファイル 存在しない場合は以下のblock自体存在しないことになる -->
+  <th:block th:replace="${links} ?: _" />
+  <th:block th:replace="${scripts} ?: _" />
+</head>
+<body>
+
+<!--/* 各ページで呼び出すヘッダーは th:fragmentを利用して書く */-->
+<header th:fragment="common_header">
+  <div class="d-flex justify-content-between p-2">
+    <div class="logo">
+      <a th:href="@{/}">Buyer Concierge</a>
+      <!-- <img class="account-img" src="">-->
+    </div>
+    <div class="menu">
+      <li class="d-inline m-4">アカウント名</li>
+      <li class="d-inline m-4">アカウント画像
+        <!-- <img class="account-img" src="">-->
+      </li>
+    </div>
+  </div>
+</header>
+
+<footer th:fragment="common_footer">
+  <p class="text-center">© 2024 Buyer Concierge by Teruhisa Shibuya</p>
+</footer>
+
+<script src="/js/bootstrap.min.js"></script>
+</body>
+</html>
